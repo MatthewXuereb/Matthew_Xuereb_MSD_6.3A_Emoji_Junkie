@@ -12,7 +12,6 @@ namespace EmojiJunkie
         [SerializeField] private GameObject _emojiPanel;
         [SerializeField] private GameObject _wordPanel;
 
-
         private void Awake()
         {
             SetEmojiPanel();
@@ -35,7 +34,6 @@ namespace EmojiJunkie
 
             _isInEmojiPanel = true;
         }
-
         private void SetWordPanel()
         {
             _gamePanel.color = new Color(0, 200, 0, 255);
