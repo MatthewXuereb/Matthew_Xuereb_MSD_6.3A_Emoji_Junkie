@@ -5,8 +5,6 @@ namespace EmojiJunkie
 {
     public class SwitchPlayer : MonoBehaviour
     {
-        private bool _isInEmojiPanel = true;
-
         [SerializeField] private Image _gamePanel;
 
         [SerializeField] private GameObject _emojiPanel;
@@ -19,7 +17,7 @@ namespace EmojiJunkie
 
         public void Switch()
         {
-            if (_isInEmojiPanel)
+            if (_emojiPanel.activeSelf)
                 SetWordPanel();
             else
                 SetEmojiPanel();
@@ -31,8 +29,6 @@ namespace EmojiJunkie
 
             _emojiPanel.SetActive(true);
             _wordPanel.SetActive(false);
-
-            _isInEmojiPanel = true;
         }
         private void SetWordPanel()
         {
@@ -40,8 +36,6 @@ namespace EmojiJunkie
 
             _emojiPanel.SetActive(false);
             _wordPanel.SetActive(true);
-
-            _isInEmojiPanel = false;
         }
     }
 }
