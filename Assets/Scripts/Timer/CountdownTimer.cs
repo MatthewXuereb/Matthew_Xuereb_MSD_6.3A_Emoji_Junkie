@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace EmojiJunkie
+namespace EmojiJunkie.Timer
 {
     public class CountdownTimer : MonoBehaviour
     {
@@ -61,6 +61,11 @@ namespace EmojiJunkie
         public void ResetTimer()
         {
             _startTime = Time.time;
+        }
+
+        public void EndTimer()
+        {
+            _stopTimer = true;
         }
     }
 }
