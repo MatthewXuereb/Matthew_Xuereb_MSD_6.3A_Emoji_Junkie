@@ -5,6 +5,8 @@ namespace EmojiJunkie
 {
     public class CountdownTimer : MonoBehaviour
     {
+        [SerializeField] private GameObject _gameOver;
+
         [SerializeField] private TextMeshProUGUI _timerText;
 
         [Header("Timer Duration")]
@@ -40,7 +42,11 @@ namespace EmojiJunkie
                 }
 
                 if (adjustedTime > _durationInSeconds)
+                {
                     _stopTimer = true;
+
+                    _gameOver.SetActive(true);
+                }
 
                 if (!_stopTimer)
                 {
