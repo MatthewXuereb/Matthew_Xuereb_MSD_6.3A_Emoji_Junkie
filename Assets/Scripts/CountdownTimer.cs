@@ -1,7 +1,9 @@
+using EmojiJunkie.Dev;
+using EmojiJunkie.Data;
 using UnityEngine;
 using TMPro;
 
-namespace EmojiJunkie.Timer
+namespace EmojiJunkie
 {
     public class CountdownTimer : MonoBehaviour
     {
@@ -14,6 +16,13 @@ namespace EmojiJunkie.Timer
         private float _startTime = 0.0f;
 
         private bool _stopTimer = false;
+
+        private GameSceneManager _gameSceneManager;
+
+        private void Awake()
+        {
+            _gameSceneManager = FindObjectOfType<GameSceneManager>();
+        }
 
         private void Start()
         {
@@ -43,9 +52,26 @@ namespace EmojiJunkie.Timer
 
                 if (adjustedTime > _durationInSeconds)
                 {
-                    _stopTimer = true;
+                    if (GameData.currentTurn >= GameData.numberOfTurnsInRound)
+                    {
+                        GameData.currentRound++;
+                        GameData.currentTurn = 1;
+                    }
+                    else
+                    {
+                        GameData.currentTurn++;
+                    }
 
-                    _gameOver.SetActive(true);
+                    if (GameData.EndGanme())
+                    {
+                        _stopTimer = true;
+                        _gameOver.SetActive(true);
+                    }
+                    else
+                    {
+                        ResetTimer();
+                        _gameSceneManager.Switch();
+                    }
                 }
 
                 if (!_stopTimer)
@@ -61,6 +87,9 @@ namespace EmojiJunkie.Timer
         public void ResetTimer()
         {
             _startTime = Time.time;
+            _stopTimer = false;
+
+            _gameSceneManager.SetDefualtPanel();
         }
 
         public void EndTimer()

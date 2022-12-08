@@ -2411,8 +2411,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1343668461}
-        m_TargetAssemblyTypeName: EmojiJunkie.PlayAgain, Assembly-CSharp
+      - m_Target: {fileID: 1343668460}
+        m_TargetAssemblyTypeName: EmojiJunkie.Dev.GameSceneManager, Dev
         m_MethodName: Replay
         m_Mode: 1
         m_Arguments:
@@ -3319,9 +3319,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1343668462}
-        m_TargetAssemblyTypeName: EmojiJunkie.Surrender, Assembly-CSharp
+      - m_Target: {fileID: 1343668460}
+        m_TargetAssemblyTypeName: EmojiJunkie.Dev.GameSceneManager, Dev
         m_MethodName: ShowGameOverPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1343668458}
+        m_TargetAssemblyTypeName: EmojiJunkie.Timer.CountdownTimer, CountdownTimer
+        m_MethodName: EndTimer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4564,7 +4576,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1343668460}
-        m_TargetAssemblyTypeName: EmojiJunkie.SwitchPlayer, Assembly-CSharp
+        m_TargetAssemblyTypeName: EmojiJunkie.Dev.GameSceneManager, Dev
         m_MethodName: Switch
         m_Mode: 1
         m_Arguments:
@@ -4636,8 +4648,6 @@ GameObject:
   - component: {fileID: 1343668459}
   - component: {fileID: 1343668458}
   - component: {fileID: 1343668460}
-  - component: {fileID: 1343668461}
-  - component: {fileID: 1343668462}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -4659,7 +4669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameOver: {fileID: 1353243126}
   _timerText: {fileID: 1244092767}
-  _durationInSeconds: 10
+  _durationInSeconds: 3
 --- !u!4 &1343668459
 Transform:
   m_ObjectHideFlags: 0
@@ -4684,40 +4694,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1343668457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 857530032cb65ab449f84d241b680a6a, type: 3}
+  m_Script: {fileID: 11500000, guid: 96399e65d4aec5b46b06b0b7b7cf931e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 443582629}
   _gamePanel: {fileID: 1375944575}
   _emojiPanel: {fileID: 832735120}
   _wordPanel: {fileID: 1615450678}
---- !u!114 &1343668461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1343668457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7600c0eb94fb5a94494f2a9754fabac3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   _gameOverPanel: {fileID: 1353243126}
---- !u!114 &1343668462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1343668457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2dce1f284c0acb4ab32f09798482b8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameOverPanel: {fileID: 1353243126}
-  _countdownTimer: {fileID: 1343668458}
 --- !u!1 &1353243126
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,15 +1,18 @@
+using EmojiJunkie.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EmojiJunkie
+namespace EmojiJunkie.Dev
 {
-    public class SwitchPlayer : MonoBehaviour
+    public class GameSceneManager : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private Image _gamePanel;
 
+        [Header("Panels")]
         [SerializeField] private GameObject _emojiPanel;
         [SerializeField] private GameObject _wordPanel;
+        [SerializeField] private GameObject _gameOverPanel;
 
         private void Awake()
         {
@@ -22,6 +25,25 @@ namespace EmojiJunkie
                 SetWordPanel();
             else
                 SetEmojiPanel();
+        }
+
+        public void ShowGameOverPanel()
+        {
+            _gameOverPanel.SetActive(true);
+        }
+
+        public void Replay()
+        {
+            _gameOverPanel.SetActive(false);
+
+            GameData.ResetGame();
+            
+            FindObjectOfType<CountdownTimer>().ResetTimer();
+        }
+
+        public void SetDefualtPanel()
+        {
+            SetEmojiPanel();
         }
 
         private void SetEmojiPanel()

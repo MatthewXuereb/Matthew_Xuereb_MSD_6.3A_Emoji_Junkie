@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EmojiJunkie
+namespace EmojiJunkie.Dev
 {
     public class HomePanelManager : MonoBehaviour
     {
