@@ -22,9 +22,17 @@ namespace EmojiJunkie.Dev
         public void Switch()
         {
             if (_emojiPanel.activeSelf)
+            {
                 SetWordPanel();
+            }
             else
-                SetEmojiPanel();
+            {
+                GameData.currentRound++;
+                if (GameData.EndGanme())
+                    ShowGameOverPanel();
+                else
+                    SetEmojiPanel();
+            }
         }
 
         public void ShowGameOverPanel()
@@ -39,6 +47,7 @@ namespace EmojiJunkie.Dev
             GameData.ResetGame();
             
             FindObjectOfType<CountdownTimer>().ResetTimer();
+            FindObjectOfType<GameSceneManager>().Switch();
         }
 
         public void SetDefualtPanel()

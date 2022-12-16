@@ -64,8 +64,8 @@ namespace EmojiJunkie
 
                     if (GameData.EndGanme())
                     {
-                        _stopTimer = true;
-                        _gameOver.SetActive(true);
+                        _stopTimer = true; 
+                        ShowGameOverPanel();
                     }
                     else
                     {
@@ -88,13 +88,16 @@ namespace EmojiJunkie
         {
             _startTime = Time.time;
             _stopTimer = false;
-
-            _gameSceneManager.SetDefualtPanel();
         }
 
         public void EndTimer()
         {
             _stopTimer = true;
+        }
+
+        public void ShowGameOverPanel()
+        {
+            _gameOver.SetActive(true);
         }
     }
 }
