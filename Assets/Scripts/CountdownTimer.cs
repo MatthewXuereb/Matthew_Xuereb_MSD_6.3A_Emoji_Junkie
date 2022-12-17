@@ -2,6 +2,7 @@ using EmojiJunkie.Dev;
 using EmojiJunkie.Data;
 using UnityEngine;
 using TMPro;
+using System;
 
 namespace EmojiJunkie
 {
@@ -12,8 +13,9 @@ namespace EmojiJunkie
         [SerializeField] private TextMeshProUGUI _timerText;
 
         [Header("Timer Duration")]
-        [SerializeField] private float _durationInSeconds = 0;
+        public float durationInSeconds = 0;
         private float _startTime = 0.0f;
+        [NonSerialized] public float timeLeft = 0.0f;
 
         private bool _stopTimer = false;
 
@@ -34,15 +36,15 @@ namespace EmojiJunkie
             if (!_stopTimer)
             {
                 float adjustedTime = (Time.time - _startTime);
-                float currentTime = _durationInSeconds - adjustedTime;
+                timeLeft = durationInSeconds - adjustedTime;
 
                 float timeInMinutes = 0;
                 for (int i = 0; i < 10; i++)
                 {
-                    if (currentTime > 60.0f)
+                    if (timeLeft > 60.0f)
                     {
                         timeInMinutes++;
-                        currentTime -= 60.0f;
+                        timeLeft -= 60.0f;
                     }
                     else
                     {
@@ -50,18 +52,8 @@ namespace EmojiJunkie
                     }
                 }
 
-                if (adjustedTime > _durationInSeconds)
+                if (adjustedTime > durationInSeconds)
                 {
-                    if (GameData.currentTurn >= GameData.numberOfTurnsInRound)
-                    {
-                        GameData.currentRound++;
-                        GameData.currentTurn = 1;
-                    }
-                    else
-                    {
-                        GameData.currentTurn++;
-                    }
-
                     if (GameData.EndGanme())
                     {
                         _stopTimer = true; 
@@ -70,6 +62,18 @@ namespace EmojiJunkie
                     else
                     {
                         ResetTimer();
+
+                        if (GameData.activePlayer == 0)
+                        {
+                            GameData.activePlayer = 1;
+                            GameData.player2Score++;
+                        }
+                        else
+                        {
+                            GameData.activePlayer = 0;
+                            GameData.player1Score++;
+                        }
+
                         _gameSceneManager.Switch();
                     }
                 }
@@ -77,7 +81,7 @@ namespace EmojiJunkie
                 if (!_stopTimer)
                 {
                     string minutesText = timeInMinutes < 10 ? "0" + timeInMinutes.ToString() : timeInMinutes.ToString();
-                    string secondsText = currentTime < 10 ? "0" + Mathf.FloorToInt(currentTime).ToString() : Mathf.FloorToInt(currentTime).ToString();
+                    string secondsText = timeLeft < 10 ? "0" + Mathf.FloorToInt(timeLeft).ToString() : Mathf.FloorToInt(timeLeft).ToString();
 
                     _timerText.text = "<b>Timer</b>\n" + minutesText + ":" + secondsText;
                 }

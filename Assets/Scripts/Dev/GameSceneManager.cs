@@ -1,4 +1,5 @@
 using EmojiJunkie.Data;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,14 @@ namespace EmojiJunkie.Dev
         [Header("Panels")]
         [SerializeField] private GameObject _emojiPanel;
         [SerializeField] private GameObject _wordPanel;
-        [SerializeField] private GameObject _gameOverPanel;
+        [SerializeField] private GameObject gameOverPanel;
+
+        [Header("Text")]
+        public TextMeshProUGUI gameOverPanelWinnerText;
+
+        [Header("Scripts")]
+        [SerializeField] private CountdownTimer _countdownTimer;
+        [SerializeField] private GameSceneManager _gameSceneManager;
 
         private void Awake()
         {
@@ -28,6 +36,7 @@ namespace EmojiJunkie.Dev
             else
             {
                 GameData.currentRound++;
+
                 if (GameData.EndGanme())
                     ShowGameOverPanel();
                 else
@@ -37,17 +46,25 @@ namespace EmojiJunkie.Dev
 
         public void ShowGameOverPanel()
         {
-            _gameOverPanel.SetActive(true);
+            if (GameData.player1Score == GameData.player2Score)
+                gameOverPanelWinnerText.text = "Draw";
+            else if (GameData.player1Score > GameData.player2Score)
+                gameOverPanelWinnerText.text = "Player 1 Won";
+            else
+                gameOverPanelWinnerText.text = "Player 2 Won";
+
+            _countdownTimer.EndTimer();
+            gameOverPanel.SetActive(true);
         }
 
         public void Replay()
         {
-            _gameOverPanel.SetActive(false);
+            gameOverPanel.SetActive(false);
 
             GameData.ResetGame();
-            
-            FindObjectOfType<CountdownTimer>().ResetTimer();
-            FindObjectOfType<GameSceneManager>().Switch();
+            _countdownTimer.ResetTimer();
+
+            SetDefualtPanel();
         }
 
         public void SetDefualtPanel()
@@ -57,6 +74,8 @@ namespace EmojiJunkie.Dev
 
         private void SetEmojiPanel()
         {
+            GameData.activePlayer = 0;
+
             float r = Mathf.InverseLerp(0.0f, 255.0f, 255.0f);
             float g = Mathf.InverseLerp(0.0f, 255.0f, 200.0f);
             float b = Mathf.InverseLerp(0.0f, 255.0f, 0.0f);
@@ -68,6 +87,8 @@ namespace EmojiJunkie.Dev
         }
         private void SetWordPanel()
         {
+            GameData.activePlayer = 1;
+
             float r = Mathf.InverseLerp(0.0f, 255.0f, 0.0f);
             float g = Mathf.InverseLerp(0.0f, 255.0f, 200.0f);
             float b = Mathf.InverseLerp(0.0f, 255.0f, 0.0f);

@@ -25,6 +25,8 @@ namespace EmojiJunkie.UI
 
         public void Reset()
         {
+            _countdownTimer.ResetTimer();
+
             for (int i = 0; i < _emojis.Length; i++)
             {
                 inputs[i].text = "";
@@ -44,19 +46,14 @@ namespace EmojiJunkie.UI
 
             if (allCorrect)
             {
-                _countdownTimer.ResetTimer();
+                float scoreToAdd = 3 * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft);
+                GameData.player1Score += scoreToAdd;
 
-                GameSceneManager gameSceneManager = FindObjectOfType<GameSceneManager>();
-                GameData.currentRound++;
-                if (GameData.EndGanme())
-                {
-                    gameSceneManager.ShowGameOverPanel();
-                }
-                else
-                {
-                    Reset();
-                    gameSceneManager.Switch();
-                }
+                scoreToAdd = 2 * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft);
+                GameData.player2Score += scoreToAdd;
+
+                Reset();
+                FindObjectOfType<GameSceneManager>().Switch();
             }
         }
     }

@@ -1,3 +1,4 @@
+using EmojiJunkie.Data;
 using EmojiJunkie.Dev;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,6 +75,8 @@ namespace EmojiJunkie.UI
 
             if (allCorrect)
             {
+                GameData.player1Score++;
+
                 _countdownTimer.ResetTimer();
                 FindObjectOfType<GameSceneManager>().Switch();
 

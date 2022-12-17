@@ -3,13 +3,15 @@ namespace EmojiJunkie.Data
     public static class GameData
     {
         public static int currentRound = 1;
-        public static int currentTurn = 1;
         private static int _numberOfRounds = 8;
-        public static int numberOfTurnsInRound = 2;
+
+        public static int activePlayer = 0;
+        public static float player1Score = 0;
+        public static float player2Score = 0;
 
         public static bool EndGanme()
         {
-            if (currentRound >= _numberOfRounds)
+            if (currentRound > _numberOfRounds)
                 return true;
             else
                 return false;
@@ -17,8 +19,11 @@ namespace EmojiJunkie.Data
 
         public static void ResetGame()
         {
+            activePlayer = 0;
+            player1Score = 0;
+            player2Score = 0;
+
             currentRound = 1;
-            currentTurn = 1;
         }
     }
 }
