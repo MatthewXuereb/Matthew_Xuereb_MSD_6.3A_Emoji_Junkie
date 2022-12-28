@@ -17,26 +17,29 @@ namespace EmojiJunkie.UI
 
         public void EndGame()
         {
-            _countdownTimer.EndTimer();
-            gameOverPanel.SetActive(true);
-
-            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(task =>
+            if (GameData.currentActivePlayer == GameData.playerId)
             {
-                DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-                if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+                _countdownTimer.EndTimer();
+                gameOverPanel.SetActive(true);
 
-                if (task.IsFaulted)
+                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(task =>
                 {
-                    //
-                }
-                else if (task.IsCompleted)
-                {
-                    int activePlayer = int.Parse(task.Result.Value.ToString());
+                    DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                    if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                    if (activePlayer == 0) _gameSceneManager.gameOverPanelWinnerText.text = "Player 2 Won";
-                    else _gameSceneManager.gameOverPanelWinnerText.text = "Player 1 Won";
-                }
-            });
+                    if (task.IsFaulted)
+                    {
+                        //
+                    }
+                    else if (task.IsCompleted)
+                    {
+                        int activePlayer = int.Parse(task.Result.Value.ToString());
+
+                        if (activePlayer == 0) _gameSceneManager.gameOverPanelWinnerText.text = "Player 2 Won";
+                        else _gameSceneManager.gameOverPanelWinnerText.text = "Player 1 Won";
+                    }
+                });
+            }
         }
     }
 }

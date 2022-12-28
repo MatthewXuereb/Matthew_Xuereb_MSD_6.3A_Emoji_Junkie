@@ -38,44 +38,47 @@ namespace EmojiJunkie.UI
 
         public void CheckInput(int i)
         {
-            if (inputs[i].text.ToLower().Equals(_emojis[i].name.ToLower()))
-                _wordsCorrect[i] = true;
-
-            bool allCorrect = true;
-            for (int j = 0; j < _wordsCorrect.Count; j++)
-                if (!_wordsCorrect[j])
-                    allCorrect = false;
-
-            if (allCorrect)
+            if (GameData.currentActivePlayer == GameData.playerId)
             {
-                DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
+                if (inputs[i].text.ToLower().Equals(_emojis[i].name.ToLower()))
+                    _wordsCorrect[i] = true;
+
+                bool allCorrect = true;
+                for (int j = 0; j < _wordsCorrect.Count; j++)
+                    if (!_wordsCorrect[j])
+                        allCorrect = false;
+
+                if (allCorrect)
                 {
-                    if (task.IsCompleted)
+                    DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                    FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
                     {
-                        if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+                        if (task.IsCompleted)
+                        {
+                            if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                        float currentScore = float.Parse(task.Result.Value.ToString());
-                        float newScore = currentScore + (3.0f * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft));
+                            float currentScore = float.Parse(task.Result.Value.ToString());
+                            float newScore = currentScore + (3.0f * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft));
 
-                        reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
-                    }
-                });
-                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("1").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
-                {
-                    if (task.IsCompleted)
+                            reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                        }
+                    });
+                    FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("1").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
                     {
-                        if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+                        if (task.IsCompleted)
+                        {
+                            if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                        float currentScore = float.Parse(task.Result.Value.ToString());
-                        float newScore = currentScore + (2.0f * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft));
+                            float currentScore = float.Parse(task.Result.Value.ToString());
+                            float newScore = currentScore + (2.0f * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft));
 
-                        reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
-                    }
-                });
+                            reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
+                        }
+                    });
 
-                Reset();
-                FindObjectOfType<GameSceneManager>().Switch();
+                    Reset();
+                    FindObjectOfType<GameSceneManager>().Switch();
+                }
             }
         }
     }

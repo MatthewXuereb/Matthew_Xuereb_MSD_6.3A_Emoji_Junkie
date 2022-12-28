@@ -50,6 +50,7 @@ namespace EmojiJunkie
                         string json = JsonUtility.ToJson(user);
 
                         GameData.playerId = 0;
+                        GameData.currentActivePlayer = 0;
                         reference.Child(roomName).Child("0").SetRawJsonValueAsync(json);
                         CreateData(roomName);
 
@@ -77,6 +78,7 @@ namespace EmojiJunkie
                         string json = JsonUtility.ToJson(user);
 
                         GameData.playerId = 0;
+                        GameData.currentActivePlayer = 0;
                         reference.Child(roomName).Child("0").SetRawJsonValueAsync(json);
                         CreateData(roomName);
 
@@ -91,6 +93,7 @@ namespace EmojiJunkie
                         string json = JsonUtility.ToJson(user);
 
                         GameData.playerId = 1;
+                        GameData.currentActivePlayer = 0;
                         reference.Child(roomName).Child("1").SetRawJsonValueAsync(json);
 
                         CreateData(roomName);

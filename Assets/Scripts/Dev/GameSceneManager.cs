@@ -1,7 +1,6 @@
 using EmojiJunkie.Data;
 using Firebase.Database;
 using Firebase.Extensions;
-using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -138,7 +137,11 @@ namespace EmojiJunkie.Dev
             {
                 if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                if (task.IsCompleted) reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync("0");
+                if (task.IsCompleted)
+                {
+                    GameData.currentActivePlayer = 0;
+                    reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync("0"); 
+                }
             });
             reference.Child(GameData.connectedRoom).Child("inEmojiPanel").SetValueAsync("true");
 
@@ -158,7 +161,11 @@ namespace EmojiJunkie.Dev
             {
                 if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                if (task.IsCompleted) reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync("1");
+                if (task.IsCompleted)
+                {
+                    GameData.currentActivePlayer = 1;
+                    reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync("1");
+                }
             });
             reference.Child(GameData.connectedRoom).Child("inEmojiPanel").SetValueAsync("false");
 

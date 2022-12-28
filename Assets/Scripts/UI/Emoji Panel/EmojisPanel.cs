@@ -45,7 +45,7 @@ namespace EmojiJunkie.UI
 
         public void Open()
         {
-            _panel.SetActive(true);
+            if (GameData.currentActivePlayer == GameData.playerId) _panel.SetActive(true);
         }
 
         public void Close()
@@ -55,49 +55,52 @@ namespace EmojiJunkie.UI
 
         public void SetCurrentIconIndex(int i)
         {
-            _currentIcon = i;
+            if (GameData.currentActivePlayer == GameData.playerId) _currentIcon = i;
         }
 
         public void SetCurrentIconImage(EmojiItem item)
         {
-            _icons[_currentIcon].GetComponent<Image>().sprite = item.sprite;
-            _emojis[_currentIcon] = item;
-
-            bool allCorrect = true;
-            for (int i = 0; i < _emojis.Length; i++)
+            if (GameData.currentActivePlayer == GameData.playerId)
             {
-                if (_emojis[i] != null)
-                    _emojisCorrect[i] = _sentences[i].name.Equals(_emojis[i].name);
-                else
-                    _emojisCorrect[i] = false;
+                _icons[_currentIcon].GetComponent<Image>().sprite = item.sprite;
+                _emojis[_currentIcon] = item;
 
-                if (!_emojisCorrect[i])
-                    allCorrect = false;
-            }
-
-            if (allCorrect)
-            {
-                DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
+                bool allCorrect = true;
+                for (int i = 0; i < _emojis.Length; i++)
                 {
-                    if (task.IsCompleted)
+                    if (_emojis[i] != null)
+                        _emojisCorrect[i] = _sentences[i].name.Equals(_emojis[i].name);
+                    else
+                        _emojisCorrect[i] = false;
+
+                    if (!_emojisCorrect[i])
+                        allCorrect = false;
+                }
+
+                if (allCorrect)
+                {
+                    DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                    FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
                     {
-                        if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+                        if (task.IsCompleted)
+                        {
+                            if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-                        float currentScore = float.Parse(task.Result.Value.ToString());
-                        float newScore = currentScore + 1;
+                            float currentScore = float.Parse(task.Result.Value.ToString());
+                            float newScore = currentScore + 1;
 
-                        reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
-                    }
-                });
+                            reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                        }
+                    });
 
-                _countdownTimer.ResetTimer();
-                FindObjectOfType<GameSceneManager>().Switch();
+                    _countdownTimer.ResetTimer();
+                    FindObjectOfType<GameSceneManager>().Switch();
 
-                Reset();
+                    Reset();
+                }
+
+                Close();
             }
-
-            Close();
         }
     }
 }

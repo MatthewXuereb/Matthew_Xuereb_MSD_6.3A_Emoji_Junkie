@@ -7,6 +7,8 @@ namespace EmojiJunkie.Data
         public static string connectedRoom;
 
         public static int playerId;
+        public static int currentActivePlayer;
+
         public static bool playerIsHost = false;
 
         public static bool EndGanme(int currentRound)
