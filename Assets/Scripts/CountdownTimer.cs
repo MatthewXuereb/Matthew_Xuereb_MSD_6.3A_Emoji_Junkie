@@ -70,7 +70,6 @@ namespace EmojiJunkie
 
                                 if (adjustedTime > durationInSeconds)
                                 {
-                                    //
                                     FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("currentRound").GetValueAsync().ContinueWithOnMainThread(currentRoundTask =>
                                     {
                                         if (currentRoundTask.IsCompleted)

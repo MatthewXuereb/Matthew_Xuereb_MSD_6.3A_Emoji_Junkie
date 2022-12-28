@@ -121,6 +121,8 @@ namespace EmojiJunkie
 
             reference.Child(roomName).Child("currentRound").SetRawJsonValueAsync("1");
             reference.Child(roomName).Child("currentTurn").SetRawJsonValueAsync("1");
+
+            reference.Child(roomName).Child("endGame").SetRawJsonValueAsync("false");
         }
 
         public void ResetRoom()

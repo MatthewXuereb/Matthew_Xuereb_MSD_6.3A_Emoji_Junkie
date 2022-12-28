@@ -15,6 +15,18 @@ namespace EmojiJunkie.UI
         [Header("Panels")]
         [SerializeField] private GameObject gameOverPanel;
 
+        private void Update()
+        {
+            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("endGame").GetValueAsync().ContinueWithOnMainThread(endGameTask =>
+            {
+                if (endGameTask.IsCompleted)
+                {
+                    bool endGame = bool.Parse(endGameTask.Result.Value.ToString());
+                    if (endGame) EndGame();
+                }
+            });
+        }
+
         public void EndGame()
         {
             if (GameData.currentActivePlayer == GameData.playerId)
@@ -24,22 +36,41 @@ namespace EmojiJunkie.UI
 
                 FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(task =>
                 {
-                    DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-                    if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-                    if (task.IsFaulted)
-                    {
-                        //
-                    }
-                    else if (task.IsCompleted)
+                    if (task.IsCompleted)
                     {
                         int activePlayer = int.Parse(task.Result.Value.ToString());
 
-                        if (activePlayer == 0) _gameSceneManager.gameOverPanelWinnerText.text = "Player 2 Won";
-                        else _gameSceneManager.gameOverPanelWinnerText.text = "Player 1 Won";
+                        FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("endGame").GetValueAsync().ContinueWithOnMainThread(endGameTask =>
+                        {
+                            if (endGameTask.IsCompleted)
+                            {
+                                bool endGame = bool.Parse(endGameTask.Result.Value.ToString());
+
+                                DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                                if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+                                reference.Child(GameData.connectedRoom).Child("endGame").SetValueAsync("true");
+
+                                if (activePlayer == 0) SetName("1");
+                                else if (activePlayer == 1) SetName("0");
+                            }
+                        });
                     }
                 });
             }
+        }
+
+        private void SetName(string playerId)
+        {
+            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child(playerId).Child("username").GetValueAsync().ContinueWithOnMainThread(playerNameTask =>
+            {
+                if (playerNameTask.IsCompleted)
+                {
+                    string player = playerNameTask.Result.Value.ToString();
+
+                    _gameSceneManager.gameOverPanelWinnerText.text = player + " Won";
+                }
+            });
         }
     }
 }
