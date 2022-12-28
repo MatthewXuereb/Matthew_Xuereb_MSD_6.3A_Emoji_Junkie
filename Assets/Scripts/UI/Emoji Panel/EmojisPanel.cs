@@ -17,7 +17,7 @@ namespace EmojiJunkie.UI
 
         [SerializeField] private GameObject[] _icons;
 
-        [SerializeField] private EmojiItem[] _sentences;
+        [SerializeField] private SentenceObject _sentence;
         [SerializeField] private EmojiItem[] _emojis;
 
         private CountdownTimer _countdownTimer;
@@ -66,10 +66,10 @@ namespace EmojiJunkie.UI
                 _emojis[_currentIcon] = item;
 
                 bool allCorrect = true;
-                for (int i = 0; i < _emojis.Length; i++)
+                for (int i = 0; i < _sentence.items.Length; i++)
                 {
                     if (_emojis[i] != null)
-                        _emojisCorrect[i] = _sentences[i].name.Equals(_emojis[i].name);
+                        _emojisCorrect[i] = _sentence.items[i].name.Equals(_emojis[i].name);
                     else
                         _emojisCorrect[i] = false;
 

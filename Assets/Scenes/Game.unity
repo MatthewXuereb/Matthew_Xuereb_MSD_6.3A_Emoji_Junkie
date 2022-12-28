@@ -4216,12 +4216,7 @@ MonoBehaviour:
   - {fileID: 1949263035}
   - {fileID: 142782770}
   - {fileID: 306248354}
-  _sentences:
-  - {fileID: 11400000, guid: f669c7e244becbe49993c5019385ea0c, type: 2}
-  - {fileID: 11400000, guid: 4780e7a1fce815f4e825be9ce16f47db, type: 2}
-  - {fileID: 11400000, guid: de596884f82321843929c036ce719996, type: 2}
-  - {fileID: 11400000, guid: b1f50912f17ac20448bbce2da2adbd96, type: 2}
-  - {fileID: 11400000, guid: fefc68393552ebc469c8b5ed8c860864, type: 2}
+  _sentence: {fileID: 11400000, guid: 6eb3e1aba647af14eaf894dd7fba46d2, type: 2}
   _emojis:
   - {fileID: 0}
   - {fileID: 0}
@@ -7264,12 +7259,7 @@ MonoBehaviour:
   - {fileID: 1757051168}
   - {fileID: 1175662262}
   - {fileID: 1153534426}
-  _emojis:
-  - {fileID: 11400000, guid: f669c7e244becbe49993c5019385ea0c, type: 2}
-  - {fileID: 11400000, guid: 4780e7a1fce815f4e825be9ce16f47db, type: 2}
-  - {fileID: 11400000, guid: de596884f82321843929c036ce719996, type: 2}
-  - {fileID: 11400000, guid: b1f50912f17ac20448bbce2da2adbd96, type: 2}
-  - {fileID: 11400000, guid: fefc68393552ebc469c8b5ed8c860864, type: 2}
+  _sentence: {fileID: 11400000, guid: 6eb3e1aba647af14eaf894dd7fba46d2, type: 2}
 --- !u!1 &1635304884
 GameObject:
   m_ObjectHideFlags: 0

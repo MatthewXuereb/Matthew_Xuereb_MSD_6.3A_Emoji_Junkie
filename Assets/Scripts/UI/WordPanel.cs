@@ -15,7 +15,7 @@ namespace EmojiJunkie.UI
         public TMP_InputField[] inputs = new TMP_InputField[5];
         private List<bool> _wordsCorrect = new List<bool>();
 
-        [SerializeField] private EmojiItem[] _emojis;
+        [SerializeField] private SentenceObject _sentence;
 
         private void Start()
         {
@@ -29,7 +29,7 @@ namespace EmojiJunkie.UI
         {
             _countdownTimer.ResetTimer();
 
-            for (int i = 0; i < _emojis.Length; i++)
+            for (int i = 0; i < _sentence.items.Length; i++)
             {
                 inputs[i].text = "";
                 _wordsCorrect[i] = false;
@@ -40,7 +40,7 @@ namespace EmojiJunkie.UI
         {
             if (GameData.currentActivePlayer == GameData.playerId)
             {
-                if (inputs[i].text.ToLower().Equals(_emojis[i].name.ToLower()))
+                if (inputs[i].text.ToLower().Equals(_sentence.items[i].name.ToLower()))
                     _wordsCorrect[i] = true;
 
                 bool allCorrect = true;
