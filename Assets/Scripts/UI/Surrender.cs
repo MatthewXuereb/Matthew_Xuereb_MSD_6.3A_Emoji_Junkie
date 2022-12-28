@@ -1,5 +1,7 @@
 using EmojiJunkie.Data;
 using EmojiJunkie.Dev;
+using Firebase.Database;
+using Firebase.Extensions;
 using UnityEngine;
 
 namespace EmojiJunkie.UI
@@ -18,8 +20,23 @@ namespace EmojiJunkie.UI
             _countdownTimer.EndTimer();
             gameOverPanel.SetActive(true);
 
-            if (GameData.activePlayer == 0) _gameSceneManager.gameOverPanelWinnerText.text = "Player 2 Won";
-            else _gameSceneManager.gameOverPanelWinnerText.text = "Player 1 Won";
+            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+                if (task.IsFaulted)
+                {
+                    //
+                }
+                else if (task.IsCompleted)
+                {
+                    int activePlayer = int.Parse(task.Result.Value.ToString());
+
+                    if (activePlayer == 0) _gameSceneManager.gameOverPanelWinnerText.text = "Player 2 Won";
+                    else _gameSceneManager.gameOverPanelWinnerText.text = "Player 1 Won";
+                }
+            });
         }
     }
 }

@@ -1,5 +1,7 @@
 using EmojiJunkie.Data;
 using EmojiJunkie.Dev;
+using Firebase.Database;
+using Firebase.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -75,7 +77,19 @@ namespace EmojiJunkie.UI
 
             if (allCorrect)
             {
-                GameData.player1Score++;
+                DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+                        float currentScore = float.Parse(task.Result.Value.ToString());
+                        float newScore = currentScore + 1;
+
+                        reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                    }
+                });
 
                 _countdownTimer.ResetTimer();
                 FindObjectOfType<GameSceneManager>().Switch();
