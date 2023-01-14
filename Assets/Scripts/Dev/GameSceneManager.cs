@@ -130,18 +130,25 @@ namespace EmojiJunkie.Dev
             SetEmojiPanel();
         }
 
+        private void SetActivePlayer(DatabaseReference reference, int activePlayer)
+        {
+            if (GameData.switchRoles)
+            {
+                if (activePlayer == 0) activePlayer = 1;
+                else if (activePlayer == 1) activePlayer = 0;
+            }
+
+            GameData.currentActivePlayer = activePlayer;
+            reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync(activePlayer.ToString());
+        }
+
         public void SetEmojiPanel()
         {
             DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
             FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-                if (task.IsCompleted)
-                {
-                    GameData.currentActivePlayer = 0;
-                    reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync("0"); 
-                }
+                if (task.IsCompleted) SetActivePlayer(reference, 0);
             });
             reference.Child(GameData.connectedRoom).Child("inEmojiPanel").SetValueAsync("true");
 
@@ -160,12 +167,7 @@ namespace EmojiJunkie.Dev
             FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-                if (task.IsCompleted)
-                {
-                    GameData.currentActivePlayer = 1;
-                    reference.Child(GameData.connectedRoom).Child("activePlayer").SetValueAsync("1");
-                }
+                if (task.IsCompleted) SetActivePlayer(reference, 1);
             });
             reference.Child(GameData.connectedRoom).Child("inEmojiPanel").SetValueAsync("false");
 

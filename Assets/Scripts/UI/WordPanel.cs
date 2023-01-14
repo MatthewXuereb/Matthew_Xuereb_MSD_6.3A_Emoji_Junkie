@@ -60,7 +60,8 @@ namespace EmojiJunkie.UI
                             float currentScore = float.Parse(task.Result.Value.ToString());
                             float newScore = currentScore + (3.0f * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft));
 
-                            reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                            if (GameData.switchRoles) reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
+                            else reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
                         }
                     });
                     FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("1").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
@@ -72,7 +73,8 @@ namespace EmojiJunkie.UI
                             float currentScore = float.Parse(task.Result.Value.ToString());
                             float newScore = currentScore + (2.0f * Mathf.InverseLerp(0.0f, _countdownTimer.durationInSeconds, _countdownTimer.timeLeft));
 
-                            reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
+                            if (GameData.switchRoles) reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                            else reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
                         }
                     });
 

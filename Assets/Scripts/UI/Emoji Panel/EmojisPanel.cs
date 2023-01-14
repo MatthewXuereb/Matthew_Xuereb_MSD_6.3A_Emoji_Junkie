@@ -89,7 +89,8 @@ namespace EmojiJunkie.UI
                             float currentScore = float.Parse(task.Result.Value.ToString());
                             float newScore = currentScore + 1;
 
-                            reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                            if (GameData.switchRoles) reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
+                            else reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
                         }
                     });
 

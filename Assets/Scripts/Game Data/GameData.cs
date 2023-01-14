@@ -10,6 +10,7 @@ namespace EmojiJunkie.Data
         public static int currentActivePlayer;
 
         public static bool playerIsHost = false;
+        public static bool switchRoles = false;
 
         public static bool EndGanme(int currentRound)
         {

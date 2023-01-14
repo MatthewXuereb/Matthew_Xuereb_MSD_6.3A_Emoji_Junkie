@@ -20,7 +20,7 @@ namespace EmojiJunkie.UI
             {
                 if (playerTask.IsCompleted) _player1Name = playerTask.Result.Value.ToString();
             });
-            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("username").GetValueAsync().ContinueWithOnMainThread(playerTask =>
+            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("1").Child("username").GetValueAsync().ContinueWithOnMainThread(playerTask =>
             {
                 if (playerTask.IsCompleted) _player2Name = playerTask.Result.Value.ToString();
             });

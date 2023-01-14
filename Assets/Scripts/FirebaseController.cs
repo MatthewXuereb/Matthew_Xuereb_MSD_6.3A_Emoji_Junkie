@@ -117,7 +117,7 @@ namespace EmojiJunkie
             reference.Child(roomName).Child("currentTime").SetRawJsonValueAsync("0");
 
             reference.Child(roomName).Child("inEmojiPanel").SetRawJsonValueAsync("true");
-            reference.Child(roomName).Child("opponentSwitchPanel").SetRawJsonValueAsync("false");
+            reference.Child(roomName).Child("opponentSwitchPanel").SetRawJsonValueAsync("true");
 
             reference.Child(roomName).Child("currentRound").SetRawJsonValueAsync("1");
             reference.Child(roomName).Child("currentTurn").SetRawJsonValueAsync("1");
@@ -139,7 +139,7 @@ namespace EmojiJunkie
             reference.Child(GameData.connectedRoom).Child("currentTime").SetValueAsync("0");
 
             reference.Child(GameData.connectedRoom).Child("inEmojiPanel").SetValueAsync("true");
-            reference.Child(GameData.connectedRoom).Child("opponentSwitchPanel").SetValueAsync("false");
+            reference.Child(GameData.connectedRoom).Child("opponentSwitchPanel").SetValueAsync("true");
 
             reference.Child(GameData.connectedRoom).Child("currentRound").SetValueAsync("1");
             reference.Child(GameData.connectedRoom).Child("currentTurn").SetValueAsync("1");

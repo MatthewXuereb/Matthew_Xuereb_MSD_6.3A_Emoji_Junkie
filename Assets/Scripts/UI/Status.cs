@@ -15,15 +15,24 @@ namespace EmojiJunkie
             DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
             if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(activePlayerTask =>
+            FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("currentRound").GetValueAsync().ContinueWithOnMainThread(currentRoundTask =>
             {
-                if (activePlayerTask.IsCompleted)
+                if (currentRoundTask.IsCompleted)
                 {
-                    int activePlayer = int.Parse(activePlayerTask.Result.Value.ToString());
-
-                    if (GameData.currentActivePlayer == 0) SetStatus("0");
-                    else if (GameData.currentActivePlayer == 1) SetStatus("1");
+                    bool switchRoles = int.Parse(currentRoundTask.Result.Value.ToString()) % 2 == 0 ? true : false;
+                    GameData.switchRoles = switchRoles;
                 }
+
+                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("activePlayer").GetValueAsync().ContinueWithOnMainThread(activePlayerTask =>
+                {
+                    if (activePlayerTask.IsCompleted)
+                    {
+                        int activePlayer = int.Parse(activePlayerTask.Result.Value.ToString());
+
+                        if (GameData.currentActivePlayer == 0) SetStatus("0");
+                        else if (GameData.currentActivePlayer == 1) SetStatus("1");
+                    }
+                });
             });
         }
 
