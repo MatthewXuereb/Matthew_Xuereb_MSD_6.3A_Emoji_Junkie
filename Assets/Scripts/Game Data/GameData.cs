@@ -7,6 +7,8 @@ namespace EmojiJunkie.Data
         public static string connectedRoom;
 
         public static int playerId;
+        public static int currentRound = 1;
+        public static int currentRoundIndex = 0;
         public static int currentActivePlayer;
         public static int currentSelectedIcon;
 
@@ -19,6 +21,14 @@ namespace EmojiJunkie.Data
                 return true;
             else
                 return false;
+        }
+
+        public static void SetCurrentRound()
+        {
+            currentRoundIndex = currentRound - 1;
+
+            if (currentRoundIndex < 0) currentRoundIndex = 0;
+            if (currentRoundIndex >= numberOfRounds) currentRoundIndex = numberOfRounds - 1;
         }
     }
 }

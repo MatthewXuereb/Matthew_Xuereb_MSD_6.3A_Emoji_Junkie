@@ -13,4 +13,11 @@ MonoBehaviour:
   m_Name: Sentence List Object
   m_EditorClassIdentifier: 
   sentences:
-  - {fileID: 11400000, guid: 6eb3e1aba647af14eaf894dd7fba46d2, type: 2}
+  - {fileID: 11400000, guid: a324658e48bc427409192c076c3c5fa1, type: 2}
+  - {fileID: 11400000, guid: a4109740f281e9146b9727e87b306c3a, type: 2}
+  - {fileID: 11400000, guid: 0552ee274ab33f94e8d87fcdd406894a, type: 2}
+  - {fileID: 11400000, guid: 4316ce40e05ce8b4285959c75993c944, type: 2}
+  - {fileID: 11400000, guid: 7b577f7a991071c42b95f1782376a457, type: 2}
+  - {fileID: 11400000, guid: 7239f9b5aed442445825d3733ee35b67, type: 2}
+  - {fileID: 11400000, guid: 48e759d2420211d40a99dbaa64fd1245, type: 2}
+  - {fileID: 11400000, guid: cc1d96d31c0b5fb40bff4a284921b1b9, type: 2}

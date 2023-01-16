@@ -1,4 +1,5 @@
 using EmojiJunkie.Data;
+using EmojiJunkie.UI;
 using Firebase.Database;
 using Firebase.Extensions;
 using TMPro;
@@ -13,12 +14,13 @@ namespace EmojiJunkie.Dev
         [SerializeField] private Image _gamePanel;
 
         [Header("Panels")]
-        [SerializeField] private GameObject _emojiPanel;
-        [SerializeField] private GameObject _wordPanel;
+        [SerializeField] private GameObject _emojiPanelObject;
+        [SerializeField] private GameObject _wordPanelObject;
         [SerializeField] private GameObject gameOverPanel;
 
         [Header("Text")]
         public TextMeshProUGUI gameOverPanelWinnerText;
+        [SerializeField] private TextMeshProUGUI _currentRoundText;
 
         [Header("Inputs")]
         [SerializeField] private TMP_InputField[] _inputs;
@@ -26,6 +28,8 @@ namespace EmojiJunkie.Dev
         [Header("Scripts")]
         [SerializeField] private CountdownTimer _countdownTimer;
         [SerializeField] private GameSceneManager _gameSceneManager;
+        [SerializeField] private EmojisPanel _emojiPanelScript;
+        [SerializeField] private WordPanel _wordPanelScript;
 
         private FirebaseController _firebaseController;
 
@@ -42,8 +46,8 @@ namespace EmojiJunkie.Dev
             {
                 int currentTurn = int.Parse(currentTurnTask.Result.Value.ToString());
 
-                if (currentTurn == 1 && _emojiPanel.activeSelf == false) SetEmojiPanel();
-                else if (currentTurn == 2 && _wordPanel.activeSelf == false) SetWordPanel();
+                if (currentTurn == 1 && _emojiPanelObject.activeSelf == false) SetEmojiPanel();
+                else if (currentTurn == 2 && _wordPanelObject.activeSelf == false) SetWordPanel();
             });
         }
 
@@ -81,6 +85,9 @@ namespace EmojiJunkie.Dev
                                 int currentRound = int.Parse(currentRoundTask.Result.Value.ToString());
                                 int nextRound = currentRound + 1;
 
+                                GameData.currentRound = nextRound;
+                                GameData.SetCurrentRound();
+
                                 reference.Child(GameData.connectedRoom).Child("currentRound").SetValueAsync(nextRound.ToString());
 
                                 if (GameData.EndGanme(nextRound)) gameSceneManager.ShowGameOverPanel();
@@ -103,11 +110,26 @@ namespace EmojiJunkie.Dev
                         if (player2Task.IsCompleted)
                         {
                             float player1Score = float.Parse(player1Task.Result.Value.ToString());
-                            float player2Score = float.Parse(player2Task.Result.Value.ToString()); 
-                            
-                            if (player1Score == player2Score) gameOverPanelWinnerText.text = "Draw";
-                            else if (player1Score > player2Score) gameOverPanelWinnerText.text = "Player 1 Won";
-                            else gameOverPanelWinnerText.text = "Player 2 Won";
+                            float player2Score = float.Parse(player2Task.Result.Value.ToString());
+
+                            if (player1Score == player2Score)
+                            {
+                                gameOverPanelWinnerText.text = "Draw";
+                            }
+                            else if (player1Score > player2Score)
+                            {
+                                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("username").GetValueAsync().ContinueWithOnMainThread(playerTask =>
+                                {
+                                    gameOverPanelWinnerText.text = playerTask.Result.Value.ToString() + " Won";
+                                });
+                            }
+                            else 
+                            { 
+                                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("username").GetValueAsync().ContinueWithOnMainThread(playerTask =>
+                                {
+                                    gameOverPanelWinnerText.text = playerTask.Result.Value.ToString() + " Won";
+                                });
+                            }
                         }
                     });
                 }
@@ -119,6 +141,8 @@ namespace EmojiJunkie.Dev
 
         public void Replay()
         {
+            GameData.currentRound = 0;
+
             gameOverPanel.SetActive(false);
 
             _firebaseController.ResetRoom();
@@ -160,8 +184,10 @@ namespace EmojiJunkie.Dev
 
             _camera.backgroundColor = new Color(r, g, b, 1);
 
-            _emojiPanel.SetActive(true);
-            _wordPanel.SetActive(false);
+            _emojiPanelObject.SetActive(true);
+            _wordPanelObject.SetActive(false);
+
+            _emojiPanelScript.SetQuestion();
         }
         public void SetWordPanel()
         {
@@ -179,9 +205,10 @@ namespace EmojiJunkie.Dev
 
             _camera.backgroundColor = new Color(r, g, b, 1);
 
-            _emojiPanel.SetActive(false);
-            _wordPanel.SetActive(true);
+            _emojiPanelObject.SetActive(false);
+            _wordPanelObject.SetActive(true);
 
+            _wordPanelScript.SetQuestion();
             ToggleInput();
         }
 

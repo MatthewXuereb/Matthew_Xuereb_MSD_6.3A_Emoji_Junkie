@@ -6,5 +6,7 @@ namespace EmojiJunkie
     public class SentenceObject : ScriptableObject
     {
         public EmojiItem[] items;
+
+        public string difficulty;
     }
 }

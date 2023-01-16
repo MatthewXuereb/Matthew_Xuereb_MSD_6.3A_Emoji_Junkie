@@ -13,8 +13,21 @@ MonoBehaviour:
   m_Name: Emoji List Object
   m_EditorClassIdentifier: 
   emojis:
-  - {fileID: 11400000, guid: f669c7e244becbe49993c5019385ea0c, type: 2}
-  - {fileID: 11400000, guid: 4780e7a1fce815f4e825be9ce16f47db, type: 2}
-  - {fileID: 11400000, guid: de596884f82321843929c036ce719996, type: 2}
-  - {fileID: 11400000, guid: b1f50912f17ac20448bbce2da2adbd96, type: 2}
-  - {fileID: 11400000, guid: fefc68393552ebc469c8b5ed8c860864, type: 2}
+  - {fileID: 11400000, guid: c350ec5853c6cac49b64f0730fdaae0e, type: 2}
+  - {fileID: 11400000, guid: 65dfe8388a8b47141b36febfb7dabab2, type: 2}
+  - {fileID: 11400000, guid: a87bdfa90546eaa41941f5091d44a531, type: 2}
+  - {fileID: 11400000, guid: f5c7a74aec433564fb25a94bf19dbb3e, type: 2}
+  - {fileID: 11400000, guid: d151e66e19d290c4ba38ac94be02a7b7, type: 2}
+  - {fileID: 11400000, guid: aa03c19a5e042fe41afdd5b74cebc618, type: 2}
+  - {fileID: 11400000, guid: 15e61618beb67dc4bbea7877080361db, type: 2}
+  - {fileID: 11400000, guid: b9099f77f2664f347b45b7818bfc9950, type: 2}
+  - {fileID: 11400000, guid: 89e323146b4be1e4097303bc29485b9c, type: 2}
+  - {fileID: 11400000, guid: 6634b2f4358bfae4697606afe4b4faab, type: 2}
+  - {fileID: 11400000, guid: 5c65088c72e44d34b9f4d4cf414c9a5a, type: 2}
+  - {fileID: 11400000, guid: b071fb242f2a94c4ca7eaf857a209436, type: 2}
+  - {fileID: 11400000, guid: bf996e03a0944ec4c9792b5c791fac3d, type: 2}
+  - {fileID: 11400000, guid: f25eb50cb8cc83046a69846688cbfd2d, type: 2}
+  - {fileID: 11400000, guid: 3c957f792f3dcee4a8c7d1d2622aee30, type: 2}
+  - {fileID: 11400000, guid: bc0cdfee7a8b85a4b9a98108943d366d, type: 2}
+  - {fileID: 11400000, guid: 39f2676e2277e8f4e87a5fd72af9f803, type: 2}
+  - {fileID: 11400000, guid: 6f76f8d4c215456489e3c6f830b07f43, type: 2}

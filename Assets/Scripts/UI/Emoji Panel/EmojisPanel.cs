@@ -3,6 +3,7 @@ using EmojiJunkie.Dev;
 using Firebase.Database;
 using Firebase.Extensions;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,14 +13,17 @@ namespace EmojiJunkie.UI
     {
         [SerializeField] private Transform _parent;
 
-        [SerializeField] private GameObject _panel;
+        [SerializeField] private GameObject _emojisPanel;
         [SerializeField] private GameObject _emojiButton;
 
-        [SerializeField] private GameObject[] _icons;
+        [SerializeField] private List<GameObject> _icons = new List<GameObject>();
 
         [SerializeField] private EmojiList _emojiList;
-        [SerializeField] private SentenceObject _sentence;
+        [SerializeField] private SentenceListObject _sentenceList;
         [SerializeField] private EmojiItem[] _emojis;
+
+        [SerializeField] private TextMeshProUGUI _question;
+        [SerializeField] private TextMeshProUGUI _difficultyText;
 
         private CountdownTimer _countdownTimer;
 
@@ -28,8 +32,8 @@ namespace EmojiJunkie.UI
         private List<bool> _emojisCorrect = new List<bool>();
 
         //private FirebaseDatabase _database;
-        private DatabaseReference _reference;
         //private DatabaseReference _scoreRef;
+        private DatabaseReference _reference;
 
         private void Start()
         {
@@ -41,7 +45,7 @@ namespace EmojiJunkie.UI
 
             _countdownTimer = FindObjectOfType<CountdownTimer>();
 
-            for (int i = 0; i < _icons.Length; i++)
+            for (int i = 0; i < _emojis.Length; i++)
                 _emojisCorrect.Add(false);
         }
 
@@ -53,6 +57,8 @@ namespace EmojiJunkie.UI
 
         public void Reset()
         {
+            GameData.currentRound = 0;
+
             for (int i = 0; i < _emojis.Length; i++)
             {
                 _emojis[i] = null;
@@ -78,14 +84,32 @@ namespace EmojiJunkie.UI
             }
         }*/
 
+        public void SetQuestion()
+        {
+            string s1 = _sentenceList.sentences[GameData.currentRoundIndex].items[0].sprite.name;
+            string s2 = _sentenceList.sentences[GameData.currentRoundIndex].items[1].sprite.name;
+            string s3 = _sentenceList.sentences[GameData.currentRoundIndex].items[2].sprite.name;
+
+            _question.text = s1 + " " + s2 + " " + s3;
+            
+            _difficultyText.text = _sentenceList.sentences[GameData.currentRoundIndex].difficulty;
+        }
+
         public void Open()
         {
-            if (GameData.currentActivePlayer == GameData.playerId) _panel.SetActive(true);
+            if (GameData.currentActivePlayer == GameData.playerId) _emojisPanel.SetActive(true);
+
+            EmojiButton[] buttons = FindObjectsOfType<EmojiButton>();
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].GetComponent<Image>().sprite = buttons[i].item.sprite;
+                //_icons.Add(buttons[i].gameObject);
+            }
         }
 
         public void Close()
         {
-            _panel.SetActive(false);
+            _emojisPanel.SetActive(false);
         }
 
         public void SetCurrentIconIndex(int i)
@@ -109,10 +133,10 @@ namespace EmojiJunkie.UI
                 _emojis[_currentIcon] = item;
 
                 bool allCorrect = true;
-                for (int i = 0; i < _sentence.items.Length; i++)
+                for (int i = 0; i < _emojis.Length; i++)
                 {
                     if (_emojis[i] != null)
-                        _emojisCorrect[i] = _sentence.items[i].name.Equals(_emojis[i].name);
+                        _emojisCorrect[i] = _sentenceList.sentences[GameData.currentRoundIndex].items[i].name.Equals(_emojis[i].name);
                     else
                         _emojisCorrect[i] = false;
 

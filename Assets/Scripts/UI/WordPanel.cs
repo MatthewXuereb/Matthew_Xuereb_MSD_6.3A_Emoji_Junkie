@@ -5,6 +5,7 @@ using Firebase.Extensions;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace EmojiJunkie.UI
 {
@@ -12,10 +13,13 @@ namespace EmojiJunkie.UI
     {
         private CountdownTimer _countdownTimer;
 
-        public TMP_InputField[] inputs = new TMP_InputField[5];
+        [SerializeField] private Image[] _images = new Image[3];
+        public TMP_InputField[] inputs = new TMP_InputField[3];
         private List<bool> _wordsCorrect = new List<bool>();
 
-        [SerializeField] private SentenceObject _sentence;
+        [SerializeField] private SentenceListObject _sentenceList;
+
+        [SerializeField] private TextMeshProUGUI _difficultyText;
 
         private void Start()
         {
@@ -29,18 +33,27 @@ namespace EmojiJunkie.UI
         {
             _countdownTimer.ResetTimer();
 
-            for (int i = 0; i < _sentence.items.Length; i++)
+            for (int i = 0; i < _sentenceList.sentences[GameData.currentRoundIndex].items.Length; i++)
             {
                 inputs[i].text = "";
                 _wordsCorrect[i] = false;
             }
         }
 
+        public void SetQuestion()
+        {
+            _images[0].sprite = _sentenceList.sentences[GameData.currentRoundIndex].items[0].sprite;
+            _images[1].sprite = _sentenceList.sentences[GameData.currentRoundIndex].items[1].sprite;
+            _images[2].sprite = _sentenceList.sentences[GameData.currentRoundIndex].items[2].sprite;
+
+            _difficultyText.text = _sentenceList.sentences[GameData.currentRoundIndex].difficulty;
+        }
+
         public void CheckInput(int i)
         {
             if (GameData.currentActivePlayer == GameData.playerId)
             {
-                if (inputs[i].text.ToLower().Equals(_sentence.items[i].name.ToLower()))
+                if (inputs[i].text.ToLower().Equals(_sentenceList.sentences[GameData.currentRoundIndex].items[i].name.ToLower()))
                     _wordsCorrect[i] = true;
 
                 bool allCorrect = true;
