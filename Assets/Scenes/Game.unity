@@ -1048,6 +1048,12 @@ MonoBehaviour:
   _wordPanel: {fileID: 1615450678}
   gameOverPanel: {fileID: 1353243126}
   gameOverPanelWinnerText: {fileID: 590080946}
+  _inputs:
+  - {fileID: 2144754371}
+  - {fileID: 156028723}
+  - {fileID: 1757051168}
+  - {fileID: 1175662262}
+  - {fileID: 1153534426}
   _countdownTimer: {fileID: 130548694}
   _gameSceneManager: {fileID: 130548693}
 --- !u!114 &130548694
@@ -4216,6 +4222,7 @@ MonoBehaviour:
   - {fileID: 1949263035}
   - {fileID: 142782770}
   - {fileID: 306248354}
+  _emojiList: {fileID: 11400000, guid: 2f3580c480b99af4087ae7e3e01fa3ac, type: 2}
   _sentence: {fileID: 11400000, guid: 6eb3e1aba647af14eaf894dd7fba46d2, type: 2}
   _emojis:
   - {fileID: 0}

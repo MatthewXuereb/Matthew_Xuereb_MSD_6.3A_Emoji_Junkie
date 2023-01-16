@@ -7,6 +7,8 @@ namespace EmojiJunkie
     {
         public string name;
 
+        public int index;
+
         public Sprite sprite;
     }
 }

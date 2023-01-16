@@ -17,6 +17,7 @@ namespace EmojiJunkie.UI
 
         [SerializeField] private GameObject[] _icons;
 
+        [SerializeField] private EmojiList _emojiList;
         [SerializeField] private SentenceObject _sentence;
         [SerializeField] private EmojiItem[] _emojis;
 
@@ -26,13 +27,29 @@ namespace EmojiJunkie.UI
 
         private List<bool> _emojisCorrect = new List<bool>();
 
-        void Start()
+        //private FirebaseDatabase _database;
+        private DatabaseReference _reference;
+        //private DatabaseReference _scoreRef;
+
+        private void Start()
         {
+            //_database = FirebaseDatabase.DefaultInstance;
+            _reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+            /*_scoreRef = FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score");
+            _scoreRef.ValueChanged += HandleValueChange;*/
+
             _countdownTimer = FindObjectOfType<CountdownTimer>();
 
             for (int i = 0; i < _icons.Length; i++)
                 _emojisCorrect.Add(false);
         }
+
+        /*private void OnDestroy()
+        {
+            _scoreRef.ValueChanged -= HandleValueChange;
+            _scoreRef = null;
+        }*/
 
         public void Reset()
         {
@@ -42,6 +59,24 @@ namespace EmojiJunkie.UI
                 _icons[i].GetComponent<Image>().sprite = null;
             }
         }
+
+        /*private void Update()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("Sentences").Child("Round_1").Child("guessIndex").Child(i.ToString()).GetValueAsync().ContinueWithOnMainThread(guessTask =>
+                {
+                    if (guessTask.IsCompleted)
+                    {
+                        int index = int.Parse(guessTask.Result.Value.ToString());
+                        if (index != -1)
+                        {
+                            _icons[i].GetComponent<Image>().sprite = _emojiList.emojis[index].sprite;
+                        }
+                    }
+                });
+            }
+        }*/
 
         public void Open()
         {
@@ -55,7 +90,15 @@ namespace EmojiJunkie.UI
 
         public void SetCurrentIconIndex(int i)
         {
-            if (GameData.currentActivePlayer == GameData.playerId) _currentIcon = i;
+            if (GameData.currentActivePlayer == GameData.playerId) 
+            {
+                _currentIcon = i;
+
+                GameData.currentSelectedIcon = i;
+
+                /*DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+                reference.Child(GameData.connectedRoom).Child("currentSelectedIcon").SetValueAsync(i.ToString());*/
+            }
         }
 
         public void SetCurrentIconImage(EmojiItem item)
@@ -79,18 +122,17 @@ namespace EmojiJunkie.UI
 
                 if (allCorrect)
                 {
-                    DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
                     FirebaseDatabase.DefaultInstance.GetReference(GameData.connectedRoom).Child("0").Child("score").GetValueAsync().ContinueWithOnMainThread(task =>
                     {
                         if (task.IsCompleted)
                         {
-                            if (reference == null) reference = FirebaseDatabase.DefaultInstance.RootReference;
+                            if (_reference == null) _reference = FirebaseDatabase.DefaultInstance.RootReference;
 
                             float currentScore = float.Parse(task.Result.Value.ToString());
                             float newScore = currentScore + 1;
 
-                            if (GameData.switchRoles) reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
-                            else reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
+                            if (GameData.switchRoles) _reference.Child(GameData.connectedRoom).Child("1").Child("score").SetValueAsync(newScore.ToString());
+                            else _reference.Child(GameData.connectedRoom).Child("0").Child("score").SetValueAsync(newScore.ToString());
                         }
                     });
 
@@ -103,5 +145,11 @@ namespace EmojiJunkie.UI
                 Close();
             }
         }
+
+        /*private void HandleValueChange(object sender, ValueChangedEventArgs e)
+        {
+            string json = e.Snapshot.GetRawJsonValue();
+            Debug.Log(json);
+        }*/
     }
 }

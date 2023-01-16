@@ -20,6 +20,9 @@ namespace EmojiJunkie.Dev
         [Header("Text")]
         public TextMeshProUGUI gameOverPanelWinnerText;
 
+        [Header("Inputs")]
+        [SerializeField] private TMP_InputField[] _inputs;
+
         [Header("Scripts")]
         [SerializeField] private CountdownTimer _countdownTimer;
         [SerializeField] private GameSceneManager _gameSceneManager;
@@ -63,7 +66,6 @@ namespace EmojiJunkie.Dev
                     });
 
                     bool inEmojiPanel = switchTask.Result.Value.ToString().ToLower() == "true" ? true : false;
-                    Debug.Log(inEmojiPanel);
 
                     GameSceneManager gameSceneManager = FindObjectOfType<GameSceneManager>();
                     if (inEmojiPanel == true)
@@ -179,6 +181,18 @@ namespace EmojiJunkie.Dev
 
             _emojiPanel.SetActive(false);
             _wordPanel.SetActive(true);
+
+            ToggleInput();
+        }
+
+        private void ToggleInput()
+        {
+            for (int i = 0; i < _inputs.Length; i++)
+            {
+                _inputs[i].interactable = true;
+                if (GameData.currentActivePlayer == GameData.playerId)
+                    _inputs[i].interactable = false;
+            }
         }
     }
 }

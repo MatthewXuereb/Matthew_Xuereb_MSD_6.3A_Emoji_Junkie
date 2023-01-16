@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: White
   m_EditorClassIdentifier: 
   name: White
+  index: 4
   sprite: {fileID: 21300000, guid: 0ee07c22250259d40b0da5fcbb082211, type: 3}

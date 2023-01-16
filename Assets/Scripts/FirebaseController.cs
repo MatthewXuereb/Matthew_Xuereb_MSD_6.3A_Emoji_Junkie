@@ -14,6 +14,8 @@ namespace EmojiJunkie
 
         private HomePanelManager _homePanelManager;
 
+        //[SerializeField] private SentenceListObject _sentenceList;
+
         void Awake()
         {
             SetReference();
@@ -58,6 +60,30 @@ namespace EmojiJunkie
                         GameData.connectedRoom = roomName;
 
                         GameData.playerIsHost = true;
+
+                        /*for (int i = 0; i < GameData.numberOfRounds; i++)
+                        {
+                            SentenceObject sentenceObject = _sentenceList.sentences[0];
+                            int length = sentenceObject.items.Length;
+
+                            Sentences sentence = new Sentences();
+                            sentence.correctWord = new string[length];
+                            sentence.correctIndex = new int[length];
+                            sentence.guessWord = new string[length];
+                            sentence.guessIndex = new int[length];
+
+                            for (int j = 0; j < length; j++)
+                            {
+                                sentence.correctWord[j] = sentenceObject.items[j].name;
+                                sentence.correctIndex[j] = sentenceObject.items[j].index;
+
+                                sentence.guessWord[j] = "null";
+                                sentence.guessIndex[j] = -1;
+                            }
+
+                            string sentenceJson = JsonUtility.ToJson(sentence);
+                            reference.Child(roomName).Child("Sentences").Child("Round_" + (i + 1).ToString()).SetRawJsonValueAsync(sentenceJson);
+                        }*/
                     }
                     else
                     {
@@ -99,6 +125,7 @@ namespace EmojiJunkie
                         CreateData(roomName);
                         reference.Child(roomName).Child("activePlayer").SetRawJsonValueAsync("0");
                         reference.Child(roomName).Child("gameIsActive").SetValueAsync("true");
+                        reference.Child(roomName).Child("timerStartTime").SetRawJsonValueAsync(Time.time.ToString());
 
                         _homePanelManager.JoinRoom();
                         GameData.connectedRoom = roomName;
@@ -121,6 +148,7 @@ namespace EmojiJunkie
 
             reference.Child(roomName).Child("currentRound").SetRawJsonValueAsync("1");
             reference.Child(roomName).Child("currentTurn").SetRawJsonValueAsync("1");
+            //reference.Child(roomName).Child("currentSelectedIcon").SetRawJsonValueAsync("-1");
 
             reference.Child(roomName).Child("endGame").SetRawJsonValueAsync("false");
         }
@@ -156,4 +184,13 @@ namespace EmojiJunkie
             this.username = username;
         }
     }
+
+    /*public class Sentences
+    {
+        public string[] correctWord;
+        public string[] guessWord;
+
+        public int[] correctIndex;
+        public int[] guessIndex;
+    }*/
 }
